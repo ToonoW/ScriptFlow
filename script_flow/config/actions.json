@@ -1,0 +1,8 @@
+[
+    {
+        "_id": 0,
+        "name": "test button",
+        "action_type": "button",
+        "order": 0
+    }
+]
