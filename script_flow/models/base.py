@@ -14,11 +14,13 @@ def create_id():
 class Model(object):
     fields = None
     collection = None
+    _queryset = None
 
     @classmethod
-    @property
     def objects(cls):
-        return QuerySet(cls)
+        if cls._queryset is None:
+            cls._queryset = QuerySet(cls)
+        return cls._queryset
 
     def __init__(self, config):
         for var_name in ('fields', 'collection',):
@@ -33,11 +35,19 @@ class Model(object):
         if not self.fields.issubset(set(config.keys())):
             raise FieldsRequireException()
         self._data = config
+        self.__update_model_dict(config)
 
     def set_fields(self, value):
         if not isinstance(value, collections.Iterable):
             raise ValueError('Value is not iterable.')
         self.fields = set(value)
+
+    def __update_model_dict(self, obj):
+        obj = copy.copy(obj)
+        if not isinstance(obj, dict):
+            raise ValueError()
+        obj.update(self.__dict__)
+        self.__dict__ = obj
 
 
 class QuerySet(object):
@@ -64,7 +74,7 @@ class QuerySet(object):
         return items
 
     def get(self, **kwargs):
-        items = self.filter(**kwargs)
+        items = tuple(self.filter(**kwargs))
         if len(items) == 0:
             raise ObjectNotExist()
         elif len(items) > 1:

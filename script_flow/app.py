@@ -4,7 +4,7 @@ from script_flow.views.main import MainView
 from script_flow import models
 
 
-mainview = models.MainViewModel(VIEWS['MainView'])
+mainview = models.MainViewModel.objects().get(name='MainView')
 
 root = tk.Tk()
 root.title(mainview.title)
