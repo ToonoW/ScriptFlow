@@ -1,3 +1,6 @@
+# -*- coding: utf-8 -*-
+
+
 class ViewMixin(object):
     """提供View有关的方法"""
 

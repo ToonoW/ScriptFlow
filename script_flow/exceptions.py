@@ -1,3 +1,6 @@
+# -*- coding: utf-8 -*-
+
+
 class FieldsRequireException(ValueError):
     """Fields requirements are not fully met"""
 
